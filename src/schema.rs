@@ -2,7 +2,7 @@ use crate::Event;
 use chrono::{DateTime, Utc};
 use ethers_core::{
     abi::Address,
-    types::{H256, U256},
+    types::{H256, U256}, k256::elliptic_curve::consts::U2,
 };
 use serde::{de::Error, Deserialize, Serialize};
 use std::{fmt, str::FromStr};
@@ -283,11 +283,42 @@ pub struct ItemListedData {
     pub order_hash: H256,
     /// Token accepted for payment.
     pub payment_token: PaymentToken,
+    /// Protocol data, considerations and stuff
+    pub protocol_data: ProtocolData,
     /// Number of items on sale. This is always `1` for ERC-721 tokens.
     pub quantity: u64,
     /// Buyer of the listing.
     #[serde(with = "address_fromjson_opt", default)]
     pub taker: Option<Address>,
+}
+
+#[derive(Serialize, Deserialize, Debug, Clone)]
+pub struct ProtocolData {
+    /// Parameters
+    pub parameters: ProtocolDataParams,
+}
+
+#[derive(Serialize, Deserialize, Debug, Clone)]
+pub struct ProtocolDataParams {
+    /// Protocol version
+    pub consideration: Vec<ProtocolDataConsideration>,
+}
+
+#[derive(Serialize, Deserialize, Debug, Clone)]
+pub struct ProtocolDataConsideration {
+
+    pub endAmount: Option<U256>,
+
+    pub indentifierOrCriteria: U256,
+
+    pub itemType: U256,
+
+    pub recipient: Address,
+
+    pub startAmount: U256,
+
+    pub token: Address,
+
 }
 
 /// Payload data for [`Payload::ItemSold`].
