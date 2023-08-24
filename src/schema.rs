@@ -2,7 +2,7 @@ use crate::Event;
 use chrono::{DateTime, Utc};
 use ethers_core::{
     abi::Address,
-    types::{H256, U256}, k256::elliptic_curve::consts::U2,
+    types::{H256, U256}
 };
 use serde::{de::Error, Deserialize, Serialize};
 use std::{fmt, str::FromStr};
@@ -69,7 +69,7 @@ pub struct Context {
 
 /// A collection on OpenSea.
 #[derive(Debug, Clone)]
-pub struct Collection(String);
+pub struct Collection(pub String);
 
 impl Serialize for Collection {
     fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error>
@@ -292,33 +292,35 @@ pub struct ItemListedData {
     pub taker: Option<Address>,
 }
 
+/// Protocol Data
 #[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct ProtocolData {
     /// Parameters
     pub parameters: ProtocolDataParams,
 }
 
+/// Protocol Data
 #[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct ProtocolDataParams {
     /// Protocol version
     pub consideration: Vec<ProtocolDataConsideration>,
 }
-
+/// Consideration
 #[derive(Serialize, Deserialize, Debug, Clone)]
+#[serde(rename_all = "camelCase")]
 pub struct ProtocolDataConsideration {
-
-    pub endAmount: Option<U256>,
-
-    pub indentifierOrCriteria: U256,
-
-    pub itemType: U256,
-
+    /// end amount/price
+    pub end_amount: Option<U256>,
+    /// token_id
+    pub indentifier_or_criteria: U256,
+    /// item type
+    pub item_type: U256,
+    /// recipient
     pub recipient: Address,
-
-    pub startAmount: U256,
-
+    /// start amount/price
+    pub start_amount: U256,
+    /// token address
     pub token: Address,
-
 }
 
 /// Payload data for [`Payload::ItemSold`].
