@@ -54,6 +54,10 @@ impl From<Payload> for Event {
             Payload::ItemReceivedBid(_) => Event::ItemReceivedBid,
         }
     }
+    /// A collection has recieved an offer
+    CollectionOffer(CollectionOfferData),
+    /// A trait has recieved an offer
+    TraitOffer(TraitOfferData),
 }
 
 /// Context for a message (token and collection)
@@ -482,6 +486,81 @@ pub struct ItemReceivedBidData {
     /// Taker of the bid.
     #[serde(with = "address_fromjson_opt", default)]
     pub taker: Option<Address>,
+}
+
+
+/// Payload data for [`Payload::CollectionOffer`].
+#[derive(Serialize, Deserialize, Debug, Clone)]
+pub struct CollectionOfferData {
+    /// Address of NFT contract.
+    #[serde(with = "address_fromjson")]
+    pub asset_contract_critera: Address,
+    /// Collection slug.
+    pub collection: Collection,
+    /// Timestamp of when the offer was received.
+    pub event_timestamp: DateTime<Utc>,
+    /// Offer price. See `payment_token` for the actual value of each unit.
+    #[serde(with = "u256_fromstr_radix_10")]
+    pub base_price: U256,
+    /// Timestamp of when the offer was created.
+    pub created_date: DateTime<Utc>,
+    /// Timestamp of when the offer will expire.
+    pub expiration_date: DateTime<Utc>,
+    /// Creator of the offer.
+    #[serde(with = "address_fromjson")]
+    pub maker: Address,
+    /// Hash id of the listing.
+    pub order_hash: H256,
+    /// Token offered for payment.
+    pub payment_token: PaymentToken,
+    /// Number of items on the offer. This is always `1` for ERC-721 tokens.
+    pub quantity: u64,
+    /// Taker of the offer.
+    #[serde(with = "address_fromjson_opt", default)]
+    pub taker: Option<Address>,
+}
+
+/// Payload data for [`Payload::TraitOffer`].
+#[derive(Serialize, Deserialize, Debug, Clone)]
+pub struct TraitOfferData {
+    /// Address of NFT contract.
+    #[serde(with = "address_fromjson")]
+    pub asset_contract_critera: Address,
+    /// Collection slug.
+    pub collection: Collection,
+    /// Trait Criteria
+    pub trait_criteria: TraitCriteria,
+    /// Timestamp of when the offer was received.
+    pub event_timestamp: DateTime<Utc>,
+    /// Offer price. See `payment_token` for the actual value of each unit.
+    #[serde(with = "u256_fromstr_radix_10")]
+    pub base_price: U256,
+    /// Timestamp of when the offer was created.
+    pub created_date: DateTime<Utc>,
+    /// Timestamp of when the offer will expire.
+    pub expiration_date: DateTime<Utc>,
+    /// Creator of the offer.
+    #[serde(with = "address_fromjson")]
+    pub maker: Address,
+    /// Hash id of the listing.
+    pub order_hash: H256,
+    /// Token offered for payment.
+    pub payment_token: PaymentToken,
+    /// Number of items on the offer. This is always `1` for ERC-721 tokens.
+    pub quantity: u64,
+    /// Taker of the offer.
+    #[serde(with = "address_fromjson_opt", default)]
+    pub taker: Option<Address>,
+}
+
+
+/// Trait Criteria
+#[derive(Serialize, Deserialize, Debug, Clone)]
+pub struct TraitCriteria {
+    /// Trait Type
+    pub trait_name: String,
+    /// Value
+    pub trait_type: String,
 }
 
 /// Auctioning system used by the listing.

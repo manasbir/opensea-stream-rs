@@ -95,4 +95,8 @@ pub enum Event {
     ItemReceivedOffer,
     /// An item has received a bid.
     ItemReceivedBid,
+    /// An Collection has received a offer.
+    CollectionOffer,
+    /// An Trait offer has been made.
+    TraitOffer,
 }
