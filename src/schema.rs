@@ -15,6 +15,7 @@ pub struct StreamEvent {
     pub sent_at: DateTime<Utc>,
     /// Contents of the message
     #[serde(flatten)]
+    #[serde(default)]
     pub payload: Payload,
 }
 
@@ -40,6 +41,10 @@ pub enum Payload {
     ItemReceivedOffer(ItemReceivedOfferData),
     /// An item has received a bid.
     ItemReceivedBid(ItemReceivedBidData),
+    /// A collection has recieved an offer
+    CollectionOffer(CollectionOfferData),
+    /// A trait has recieved an offer
+    TraitOffer(TraitOfferData),
 }
 
 impl From<Payload> for Event {
@@ -52,12 +57,10 @@ impl From<Payload> for Event {
             Payload::ItemCancelled(_) => Event::ItemCancelled,
             Payload::ItemReceivedOffer(_) => Event::ItemReceivedOffer,
             Payload::ItemReceivedBid(_) => Event::ItemReceivedBid,
+            Payload::CollectionOffer(_) => Event::CollectionOffer,
+            Payload::TraitOffer(_) => Event::TraitOffer,
         }
     }
-    /// A collection has recieved an offer
-    CollectionOffer(CollectionOfferData),
-    /// A trait has recieved an offer
-    TraitOffer(TraitOfferData),
 }
 
 /// Context for a message (token and collection)
@@ -494,7 +497,7 @@ pub struct ItemReceivedBidData {
 pub struct CollectionOfferData {
     /// Address of NFT contract.
     #[serde(with = "address_fromjson")]
-    pub asset_contract_critera: Address,
+    pub asset_contract_criteria: Address,
     /// Collection slug.
     pub collection: Collection,
     /// Timestamp of when the offer was received.
@@ -525,7 +528,7 @@ pub struct CollectionOfferData {
 pub struct TraitOfferData {
     /// Address of NFT contract.
     #[serde(with = "address_fromjson")]
-    pub asset_contract_critera: Address,
+    pub asset_contract_criteria: Address,
     /// Collection slug.
     pub collection: Collection,
     /// Trait Criteria
