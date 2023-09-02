@@ -269,7 +269,6 @@ pub struct ItemListedData {
     /// Context
     #[serde(flatten)]
     pub context: Context,
-
     /// Timestamp of when the listing was created.
     pub event_timestamp: DateTime<Utc>,
     /// Starting price of the listing. See `payment_token` for the actual value of each unit.
@@ -290,44 +289,11 @@ pub struct ItemListedData {
     pub order_hash: H256,
     /// Token accepted for payment.
     pub payment_token: PaymentToken,
-    /// Protocol data, considerations and stuff
-    pub protocol_data: ProtocolData,
     /// Number of items on sale. This is always `1` for ERC-721 tokens.
     pub quantity: u64,
     /// Buyer of the listing.
     #[serde(with = "address_fromjson_opt", default)]
     pub taker: Option<Address>,
-}
-
-/// Protocol Data
-#[derive(Serialize, Deserialize, Debug, Clone)]
-pub struct ProtocolData {
-    /// Parameters
-    pub parameters: ProtocolDataParams,
-}
-
-/// Protocol Data
-#[derive(Serialize, Deserialize, Debug, Clone)]
-pub struct ProtocolDataParams {
-    /// Protocol version
-    pub consideration: Vec<ProtocolDataConsideration>,
-}
-/// Consideration
-#[derive(Serialize, Deserialize, Debug, Clone)]
-#[serde(rename_all = "camelCase")]
-pub struct ProtocolDataConsideration {
-    /// end amount/price
-    pub end_amount: Option<U256>,
-    /// token_id
-    pub indentifier_or_criteria: U256,
-    /// item type
-    pub item_type: U256,
-    /// recipient
-    pub recipient: Address,
-    /// start amount/price
-    pub start_amount: U256,
-    /// token address
-    pub token: Address,
 }
 
 /// Payload data for [`Payload::ItemSold`].
