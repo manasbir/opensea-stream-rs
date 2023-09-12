@@ -1,4 +1,6 @@
-# opensea-stream but i added the protocol_data part :D
+# opensea-stream
+
+### added working trait and collection offers
 
 Crate for receiving updates from the [OpenSea Stream API](https://docs.opensea.io/reference/stream-api-overview).
 This crate is a thin wrapper over [`phyllo`](https://crates.io/crates/phyllo) with a few convenience functions and struct definitions for the event schema.
