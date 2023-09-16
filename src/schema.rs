@@ -2,7 +2,7 @@ use crate::Event;
 use chrono::{DateTime, Utc};
 use ethers_core::{
     abi::Address,
-    types::{H256, U256}
+    types::{H256, U256},
 };
 use serde::{de::Error, Deserialize, Serialize};
 use std::{fmt, str::FromStr};
@@ -457,7 +457,6 @@ pub struct ItemReceivedBidData {
     pub taker: Option<Address>,
 }
 
-
 /// Payload data for [`Payload::CollectionOffer`].
 #[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct CollectionOfferData {
@@ -521,7 +520,6 @@ pub struct TraitOfferData {
     #[serde(with = "address_fromjson_opt", default)]
     pub taker: Option<Address>,
 }
-
 
 /// Trait Criteria
 #[derive(Serialize, Deserialize, Debug, Clone)]
